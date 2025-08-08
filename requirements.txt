@@ -1,3 +1,5 @@
-langchain
-langchain-community
-python-dotenv
+# requirements.txt
+langchain>=0.1.20
+langchain-community>=0.0.38
+langchain-core>=0.1.52
+python-dotenvlangchain-ollama-0.3.6
