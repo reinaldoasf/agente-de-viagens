@@ -1,7 +1,6 @@
 from langchain_ollama import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.agents import create_tool_calling_agent, AgentExecutor
-from tools import agent_tools
 
 class TravelAgent:
     def __init__(self, tool_list: list, provider: str = "ollama", model_name: str = "llama3", verbose: bool = True):
@@ -27,7 +26,7 @@ class TravelAgent:
         if self.provider == "ollama":
             return ChatOllama(model=self.model_name, temperature=0.3)
         else:
-            raise("só temos ollama por enquanto, depois modificaremos")
+            raise NotImplementedError("Por enquanto só temos modelos Ollama.")
 
     def _create_agent_executor(self):
         "Método para montar o prompt, agente e o executor."
@@ -46,22 +45,11 @@ class TravelAgent:
     
 
     def ask(self, query:str) -> str:
-        response = self.agent_executor.invoke({"input":query})
-
-        return response["output"]
-
-
-if __name__ == "__main__":
-    agent = TravelAgent(tool_list=agent_tools, provider="ollama", model_name="llama3.2", verbose=False)
-
-    query1 = "Eu quero buscar um voo de São Paulo para Natal para o dia 25 de Dezembro de 2025."
-    response1 = agent.ask(query1)
-    print("\nResposta Final:")
-    print(response1)
-
-    query2 = "Olá, preciso de um voo de Curitiba para o Rio de Janeiro no dia 10 de Setembro de 2025 e voltando dia 20. Também quero ver hotéis por lá para essas datas."
-    response2 = agent.ask(query2)
-    print("\nResposta Final:")
-    print(response2)
+        try:
+            response = self.agent_executor.invoke({"input":query})
+            return response["output"]
+        except Exception as e:
+            print(f"Erro ao invocar o agente {e}")
+            return "Desculpe, houve um erro interno ao processar a informação."
 
 
