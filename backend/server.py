@@ -37,7 +37,7 @@ def home():
 def ask_agent(request: QueryRequest):
     """Recebe uma query do usuário e processa pelo agente."""
     response = agent.ask(request.query)
-    return {"Resposta":response}
+    return {"answer":response}
 
 
 
